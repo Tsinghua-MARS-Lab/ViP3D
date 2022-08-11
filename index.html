@@ -25,7 +25,12 @@
     <section
             class="banner style1 orient-left content-align-center image-position-center fullscreen onload-image-fade-in onload-content-fade-right">
         <div class="content">
-            <h2>ViP3D: End-to-end Visual Trajectory Prediction via 3D Agent Queries</h2>
+            <div style="align-items: center; display: flex; flex-direction: row; width: 1200px; justify-content: flex-start; margin-left: -200px; margin-top: -100px">
+                <div class="image" style="width: 200px; height: 250px; background-color: white">
+                    <img src="images/logo.png" alt=""/>
+                </div>
+                <h2 style="">ViP3D: End-to-end Visual Trajectory Prediction <br> via 3D Agent Queries</h2>
+            </div>
             <p><a>Junru Gu</a><sup>1</sup>*,
                 <a>Chenxu Hu</a><sup>1</sup>*,
                 <a>Tianyuan Zhang</a><sup>2,3</sup>,
@@ -47,7 +52,7 @@
             <!-- <p>* Denotes equal contribution</p> -->
             <!--            <h3>CVPR 2022</h3>-->
             <p>ViP3D is the first vision-based approach to predict future trajectories of agents for autonomous
-                driving.</p>
+                driving, modeling instance-wise agent detection, tracking and prediction.</p>
             <!-- <p class="major">A (modular, highly tweakable) responsive one-page template designed by <a href="https://html5up.net">HTML5 UP</a> and released for free under the <a href="https://html5up.net/license">Creative Commons</a>.</p> -->
             <div class="inner">
                 <ul class="icons">
@@ -64,9 +69,9 @@
                 <li><a href="#first" class="button big wide smooth-scroll-middle">Learn More</a></li>
             </ul>
         </div>
-        <div class="image" style="width: 600px; ">
-            <img src="images/teaser.png" alt=""/>
-        </div>
+<!--        <div class="image" style="width: 600px; ">-->
+<!--            <img src="images/teaser.png" alt=""/>-->
+<!--        </div>-->
     </section>
 
     <!-- Abstract -->
@@ -101,177 +106,177 @@
 
 
     <!-- Relation prediction demos -->
-<!--    <section class="wrapper style1 align-left">-->
-<!--        <div class="inner">-->
-<!--            <h2>Relationship Prediction Demos</h2>-->
-<!--            <p>Here are some of our relationship prediction results against some very challenging scenarios from the <a-->
-<!--                    href="https://waymo.com/open/">Waymo Open Motion Dataset</a>. Our relation predictor can successfuly-->
-<!--                predict relations involving interactive vehicles marked in blue. Detected relationships were marked as-->
-<!--                red arrows from the influencers to the reactors.</p>-->
-<!--            &lt;!&ndash; <img class="image main" width=45% height=auto src="images/legends1.png" alt="" /> &ndash;&gt;-->
-<!--            <img width=100% height=auto src="images/legends1.png" alt=""/>-->
-<!--        </div>-->
-<!--        <div class="items style1 medium onscroll-fade-in">-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/merging_normal_3.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Merging into high speed traffic</h3>-->
-<!--                <p>The relationship predictor chooses the best influencer to follow while merging.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/normal_merging_16.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Merging into crowded traffic</h3>-->
-<!--                <p>The relationship predictor correctly sorts the crowd before the green light at an intersection.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/crazy_merging.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Multiple lane changings</h3>-->
-<!--                <p>The relationship predictor selects reasonable influencers for both blue agents against complex-->
-<!--                    scenarios.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/yielding_1.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding to a jaywalker</h3>-->
-<!--                <p>The relationship predictor learns to yield to pedestrians when nessesary.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/yielding_2.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding to other vehicles</h3>-->
-<!--                <p>The relationship predictor learns the right of the way.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/yielding_3.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding with detection failure</h3>-->
-<!--                <p>The relationship predictor can make correct predictions with detection failures on the traffic-->
-<!--                    lights.</p>-->
-<!--            </section>-->
-<!--        </div>-->
-<!--    </section>-->
+    <!--    <section class="wrapper style1 align-left">-->
+    <!--        <div class="inner">-->
+    <!--            <h2>Relationship Prediction Demos</h2>-->
+    <!--            <p>Here are some of our relationship prediction results against some very challenging scenarios from the <a-->
+    <!--                    href="https://waymo.com/open/">Waymo Open Motion Dataset</a>. Our relation predictor can successfuly-->
+    <!--                predict relations involving interactive vehicles marked in blue. Detected relationships were marked as-->
+    <!--                red arrows from the influencers to the reactors.</p>-->
+    <!--            &lt;!&ndash; <img class="image main" width=45% height=auto src="images/legends1.png" alt="" /> &ndash;&gt;-->
+    <!--            <img width=100% height=auto src="images/legends1.png" alt=""/>-->
+    <!--        </div>-->
+    <!--        <div class="items style1 medium onscroll-fade-in">-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/merging_normal_3.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Merging into high speed traffic</h3>-->
+    <!--                <p>The relationship predictor chooses the best influencer to follow while merging.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/normal_merging_16.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Merging into crowded traffic</h3>-->
+    <!--                <p>The relationship predictor correctly sorts the crowd before the green light at an intersection.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/crazy_merging.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Multiple lane changings</h3>-->
+    <!--                <p>The relationship predictor selects reasonable influencers for both blue agents against complex-->
+    <!--                    scenarios.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/yielding_1.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding to a jaywalker</h3>-->
+    <!--                <p>The relationship predictor learns to yield to pedestrians when nessesary.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/yielding_2.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding to other vehicles</h3>-->
+    <!--                <p>The relationship predictor learns the right of the way.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/yielding_3.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding with detection failure</h3>-->
+    <!--                <p>The relationship predictor can make correct predictions with detection failures on the traffic-->
+    <!--                    lights.</p>-->
+    <!--            </section>-->
+    <!--        </div>-->
+    <!--    </section>-->
 
     <!-- Relation prediction demos -->
-<!--    <section class="wrapper style1 align-left">-->
-<!--        <div class="inner">-->
-<!--            <h2>Conditional Trajectory Prediction Demos</h2>-->
-<!--            <p>Here are some of our conditional trajectory prediction results for the reactors from the <a-->
-<!--                    href="https://waymo.com/open/">Waymo Open Motion Dataset</a>. Our conditional trajectory predictor-->
-<!--                outperforms the marginal trajectory predictor on solving conflicts under complex multi-agent-->
-<!--                interactions.</p>-->
-<!--            <img width=100% height=auto src="images/legends1.png" alt=""/>-->
-<!--        </div>-->
-<!--        <div class="items style1 medium onscroll-fade-in">-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_yield_p.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding to pedestrians</h3>-->
-<!--                <p>The conditional predictor predicts a yielding trajectory after several pedestrians in a busy-->
-<!--                    intersection.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_yielding_p.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding to a cyclist</h3>-->
-<!--                <p>The conditional predictor predicts a yielding trajectory after a cyclist in a busy intersection.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_yielding_p2.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Yielding to a jaywalker</h3>-->
-<!--                <p>The conditional predictor predicts a yielding trajectory after a jaywalker. A clear <strong>slow-->
-<!--                    down</strong> and <strong>speed up</strong> can be spotted before and after the interaction.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_merge_2.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Turning into the main road</h3>-->
-<!--                <p>The conditional trajectory predictor predicts the turning vehicle to wait until it is clear of-->
-<!--                    traffic.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_turning_1.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Right turns yield to continous left turns</h3>-->
-<!--                <p>The conditional trajectory predictor predicts a turning trajectory until previous traffic is-->
-<!--                    clear.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_turnings_1.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Multiple turnings</h3>-->
-<!--                <p>The conditional predictor follows the predicted relations and generates consistant trajectories.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_merging.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Cutting in before an intersection</h3>-->
-<!--                <p>The conditional predictor generates shorter and slower trajectory for the reactor than the-->
-<!--                    influencer.</p>-->
-<!--            </section>-->
-<!--            <section>-->
-<!--							<span class="video">-->
-<!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
-<!--									<source src="videos/traj_following_turning.mp4" type="video/mp4">-->
-<!--									</video>-->
-<!--								</span>-->
-<!--                <h3>Following another vehicle</h3>-->
-<!--                <p>The conditional predictor generates trajectories for the vehicle to follow the leading vehicle when-->
-<!--                    turning right.</p>-->
-<!--            </section>-->
-<!--        </div>-->
-<!--    </section>-->
+    <!--    <section class="wrapper style1 align-left">-->
+    <!--        <div class="inner">-->
+    <!--            <h2>Conditional Trajectory Prediction Demos</h2>-->
+    <!--            <p>Here are some of our conditional trajectory prediction results for the reactors from the <a-->
+    <!--                    href="https://waymo.com/open/">Waymo Open Motion Dataset</a>. Our conditional trajectory predictor-->
+    <!--                outperforms the marginal trajectory predictor on solving conflicts under complex multi-agent-->
+    <!--                interactions.</p>-->
+    <!--            <img width=100% height=auto src="images/legends1.png" alt=""/>-->
+    <!--        </div>-->
+    <!--        <div class="items style1 medium onscroll-fade-in">-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_yield_p.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding to pedestrians</h3>-->
+    <!--                <p>The conditional predictor predicts a yielding trajectory after several pedestrians in a busy-->
+    <!--                    intersection.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_yielding_p.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding to a cyclist</h3>-->
+    <!--                <p>The conditional predictor predicts a yielding trajectory after a cyclist in a busy intersection.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_yielding_p2.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Yielding to a jaywalker</h3>-->
+    <!--                <p>The conditional predictor predicts a yielding trajectory after a jaywalker. A clear <strong>slow-->
+    <!--                    down</strong> and <strong>speed up</strong> can be spotted before and after the interaction.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_merge_2.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Turning into the main road</h3>-->
+    <!--                <p>The conditional trajectory predictor predicts the turning vehicle to wait until it is clear of-->
+    <!--                    traffic.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_turning_1.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Right turns yield to continous left turns</h3>-->
+    <!--                <p>The conditional trajectory predictor predicts a turning trajectory until previous traffic is-->
+    <!--                    clear.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_turnings_1.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Multiple turnings</h3>-->
+    <!--                <p>The conditional predictor follows the predicted relations and generates consistant trajectories.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_merging.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Cutting in before an intersection</h3>-->
+    <!--                <p>The conditional predictor generates shorter and slower trajectory for the reactor than the-->
+    <!--                    influencer.</p>-->
+    <!--            </section>-->
+    <!--            <section>-->
+    <!--							<span class="video">-->
+    <!--								<video controls autoplay muted loop class="html-video" width=100% height=auto>-->
+    <!--									<source src="videos/traj_following_turning.mp4" type="video/mp4">-->
+    <!--									</video>-->
+    <!--								</span>-->
+    <!--                <h3>Following another vehicle</h3>-->
+    <!--                <p>The conditional predictor generates trajectories for the vehicle to follow the leading vehicle when-->
+    <!--                    turning right.</p>-->
+    <!--            </section>-->
+    <!--        </div>-->
+    <!--    </section>-->
 
-<!--    <section class="wrapper style1 align-center">-->
-<!--        <div class="inner">-->
-<!--            <h2>Citing</h2>-->
-<!--            <p>If you find our work intriguing, inspiring or useful to your research, please consider citing:</p>-->
-<!--            <blockquote style="text-align:left; background-color:#EEEEEE">-->
+    <!--    <section class="wrapper style1 align-center">-->
+    <!--        <div class="inner">-->
+    <!--            <h2>Citing</h2>-->
+    <!--            <p>If you find our work intriguing, inspiring or useful to your research, please consider citing:</p>-->
+    <!--            <blockquote style="text-align:left; background-color:#EEEEEE">-->
 
-<!--            </blockquote>-->
-<!--        </div>-->
-<!--    </section>-->
+    <!--            </blockquote>-->
+    <!--        </div>-->
+    <!--    </section>-->
 
 </div>
 
