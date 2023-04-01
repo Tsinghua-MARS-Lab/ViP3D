@@ -353,17 +353,6 @@ class NuScenesTrackDatasetRadar(Dataset):
 
                     run(**instance_idx_2_labels[instance_idx])
 
-        def get_image_paths(info):
-            image_paths = {}
-            for cam_type, cam_info in info['cams'].items():
-                if 'data/nuscenes/' in cam_info['data_path']:
-                    image_paths[cam_type] = cam_info['data_path'].replace('data/nuscenes/', '')
-                elif 'data/nuscenes2/' in cam_info['data_path']:
-                    image_paths[cam_type] = cam_info['data_path'].replace('data/nuscenes2/', '')
-                else:
-                    assert False
-            return image_paths
-
         instance_inds = None
         if same_scene and data_history is not None:
             instance_inds = data_history['instance_inds'][end - 1 - start]
@@ -375,7 +364,6 @@ class NuScenesTrackDatasetRadar(Dataset):
             cur_e2g_t=cur_e2g_t,
             r_index_2_rotation_and_transform=r_index_2_rotation_and_transform,
             valid_pred=same_scene and data_history is not None,
-            image_paths=get_image_paths(cur_info),
             instance_inds=instance_inds,
         ))
 

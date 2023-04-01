@@ -64,10 +64,6 @@ def parse_args():
         help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
 
-
-    from tools.shared_utils import add_arguments
-    add_arguments(parser)
-
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
         os.environ['LOCAL_RANK'] = str(args.local_rank)
@@ -86,7 +82,6 @@ def parse_args():
 def main():
     args = parse_args()
 
-
     from mmdet3d import __version__
     from mmdet3d.datasets import build_dataset
     from mmdet3d.models import build_detector
@@ -101,9 +96,6 @@ def main():
     if cfg.get('custom_imports', None):
         from mmcv.utils import import_modules_from_strings
         import_modules_from_strings(**cfg['custom_imports'])
-
-    from tools.shared_utils import run_args
-    run_args(args, cfg)
 
     # import modules from plguin/xx, registry will be updated
     if hasattr(cfg, 'plugin') & cfg.plugin:
@@ -157,12 +149,10 @@ def main():
     else:
         distributed = True
 
-
         init_dist(args.launcher, **cfg.dist_params)
         # re-set gpu_ids with distributed training mode
         _, world_size = get_dist_info()
         cfg.gpu_ids = range(world_size)
-
 
     # create work_dir
     mmcv.mkdir_or_exist(osp.abspath(cfg.work_dir))
@@ -230,7 +220,6 @@ def main():
             CLASSES=datasets[0].CLASSES)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
-
 
     train_tracker(
         model,

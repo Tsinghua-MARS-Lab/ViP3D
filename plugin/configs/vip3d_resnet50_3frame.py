@@ -145,9 +145,6 @@ model = dict(
             hidden_size=128,
         ),
     ),
-    visual_cfg=dict(
-        visual_dir=None,
-    ),
     # model training and testing settings
     train_cfg=dict(
         grid_size=[512, 512, 1],
@@ -246,7 +243,7 @@ data = dict(
         type=dataset_type,
         num_frames_per_sample=3,
         data_root=data_root,
-        ann_file=data_root + 'track_radar_infos_train.pkl',
+        ann_file=data_root + 'nuscenes_tracking_infos_train.pkl',
         pipeline_single=train_pipeline,
         pipeline_post=train_pipeline_post,
         classes=class_names,
@@ -259,13 +256,13 @@ data = dict(
         do_pred=True),
     # ),
     val=dict(type=dataset_type, pipeline_single=test_pipeline, pipeline_post=test_pipeline_post, classes=class_names, modality=input_modality,
-             ann_file=data_root + 'track_radar_infos_val.pkl',
+             ann_file=data_root + 'nuscenes_tracking_infos_val.pkl',
              num_frames_per_sample=1,
              do_pred=True),
     test=dict(type=dataset_type, pipeline_single=test_pipeline,
               pipeline_post=test_pipeline_post,
               classes=class_names, modality=input_modality,
-              ann_file=data_root + 'track_radar_infos_val.pkl',
+              ann_file=data_root + 'nuscenes_tracking_infos_val.pkl',
               num_frames_per_sample=1,
               do_pred=True))
 
@@ -293,5 +290,6 @@ evaluation = dict(interval=24)
 runner = dict(type='EpochBasedRunner', max_epochs=24)
 
 find_unused_parameters = True
+load_from = 'ckpts/detr3d_resnet50.pth'
 
 fp16 = dict(loss_scale='dynamic')

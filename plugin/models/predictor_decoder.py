@@ -84,12 +84,6 @@ class Decoder(nn.Module):
         self.reduce_prob_of = reduce_prob_of
         self.rebalance_prob = rebalance_prob
 
-        results = dict(
-            pred_outputs=utils.to_numpy(outputs),
-            pred_probs=utils.to_numpy(pred_probs),
-        )
-        return loss.mean(), results, None
-
     def forward_variety_loss(self, mapping: List[Dict], hidden_states: Tensor, batch_size, inputs: Tensor,
                              inputs_lengths: List[int], labels_is_valid: List[np.ndarray], loss: Tensor,
                              DE: np.ndarray, device, labels: List[np.ndarray],
