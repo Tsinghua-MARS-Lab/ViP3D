@@ -30,7 +30,10 @@ pip install mmdet==2.14.0
 cd ViP3D
 pip install -e .
 ```
-
+#### Install other packages
+```bash
+pip install -r requirements.txt
+```
 
 ## Prepare Dataset
 #### Download nuScenes full dataset (v1.0) and map expansion (v1.3) [here](https://www.nuscenes.org/download).
