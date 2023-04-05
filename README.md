@@ -23,16 +23,16 @@ pip install torch==1.10+cu111 torchvision==0.11.1+cu111 -f https://download.pyto
 #### Install mmcv, mmdet
 ```bash
 pip install mmcv-full==1.4.0 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10/index.html
-pip install mmdet==2.14.0
+pip install mmdet==2.24.1
 ```
-#### Install mmdet3d locally
+#### Install mmdet3d
 ```bash
-cd ViP3D
-pip install -e .
-```
-#### Install other packages
-```bash
-pip install -r requirements.txt
+cd ~
+git clone https://github.com/open-mmlab/mmdetection3d.git
+cd mmdetection3d
+git checkout v0.17.1 # Other versions may not be compatible.
+python setup.py install
+pip install -r requirements.txt  # Install packages for mmdet3d
 ```
 
 ## Prepare Dataset

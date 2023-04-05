@@ -14,9 +14,9 @@ from mmdet.models import build_loss
 from pyquaternion import Quaternion
 
 from mmdet3d.core.bbox.coders import build_bbox_coder
-from mmdet3d.core.bbox.util import normalize_bbox, denormalize_bbox
+from ...mmdet3d_plugin.core.bbox.util import normalize_bbox, denormalize_bbox
 from mmdet3d.models.detectors.mvx_two_stage import MVXTwoStageDetector
-from mmdet3d.models.utils.grid import GridMask
+from ...mmdet3d_plugin.models.utils.grid_mask import GridMask
 from .attention_dert3d import inverse_sigmoid
 from . import predictor_lib
 from .memory_bank import build_memory_bank

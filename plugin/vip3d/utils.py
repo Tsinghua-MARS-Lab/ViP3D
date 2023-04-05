@@ -623,7 +623,7 @@ def update_track_idx_2_boxes_in_lidar(track_idx_2_boxes, track_ids, boxes_3d, ma
 def get_decoded_boxes(pred_boxes, pc_range, img_metas):
     # follow _active_instances2results
 
-    from mmdet3d.core.bbox.util import denormalize_bbox
+    from ..mmdet3d_plugin.core.bbox.util import denormalize_bbox
     bboxes = denormalize_bbox(pred_boxes, pc_range)
     bboxes[:, 2] = bboxes[:, 2] - bboxes[:, 5] * 0.5
     bboxes = img_metas[0]['box_type_3d'][0](bboxes, 9)

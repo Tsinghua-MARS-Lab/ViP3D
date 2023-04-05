@@ -90,7 +90,6 @@ model = dict(
         out_channels=256,
         start_level=1,
         add_extra_convs=True,
-        extra_convs_on_inputs=False,  # use P5
         num_outs=4,
         norm_cfg=dict(type='BN2d'),
         relu_before_extra_convs=True),
@@ -147,34 +146,25 @@ model = dict(
     ),
     # model training and testing settings
     train_cfg=dict(
-        grid_size=[512, 512, 1],
-        voxel_size=voxel_size,
-        point_cloud_range=point_cloud_range,
-        out_size_factor=4,
-        dense_reg=1,
-        gaussian_overlap=0.1,
-        max_objs=500,
-        min_radius=2,
-        code_weights=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.2],
-        assigner=dict(
-            type='HungarianAssigner3D',
-            cls_cost=dict(type='FocalLossCost', weight=2.0),
-            reg_cost=dict(type='BBox3DL1Cost', weight=0.25),
-            iou_cost=dict(type='GIoU3DCost', weight=0.0),
-            pc_range=point_cloud_range)),
-    test_cfg=dict(
-        post_center_limit_range=[-61.2, -61.2, -10.0, 61.2, 61.2, 10.0],
-        pc_range=point_cloud_range[:2],
-        max_per_img=500,
-        max_pool_nms=False,
-        min_radius=[4, 12, 10, 1, 0.85, 0.175],
-        score_threshold=0.1,
-        out_size_factor=4,
-        voxel_size=voxel_size,
-        nms_type='rotate',
-        pre_max_size=1000,
-        post_max_size=83,
-        nms_thr=0.2))
+        pts=dict(
+            grid_size=[512, 512, 1],
+            voxel_size=voxel_size,
+            point_cloud_range=point_cloud_range,
+            out_size_factor=4,
+            dense_reg=1,
+            gaussian_overlap=0.1,
+            max_objs=500,
+            min_radius=2,
+            code_weights=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.2, 0.2],
+            assigner=dict(
+                type='HungarianAssigner3D',
+                cls_cost=dict(type='FocalLossCost', weight=2.0),
+                reg_cost=dict(type='BBox3DL1Cost', weight=0.25),
+                iou_cost=dict(type='GIoU3DCost', weight=0.0),
+                pc_range=point_cloud_range)
+        )
+    ),
+)
 
 # x y z rcs vx vy vx_comp vy_comp x_rms y_rms vx_rms vy_rms
 radar_use_dims = [0, 1, 2, 5, 6, 7, 8, 9, 12, 13, 16, 17, 18]
@@ -200,8 +190,9 @@ train_pipeline = [
     dict(type='LoadAnnotations3D', with_bbox_3d=True, with_label_3d=True),
     dict(type='InstanceRangeFilter', point_cloud_range=point_cloud_range),
     # dict(type='ObjectNameFilter', classes=class_names),
-    dict(type='Normalize3D', **img_norm_cfg),
-    dict(type='Pad3D', size_divisor=32)]
+    dict(type='NormalizeMultiviewImage', **img_norm_cfg),
+    dict(type='PadMultiViewImage', size_divisor=32)
+]
 
 train_pipeline_post = [
     dict(type='FormatBundle3DTrack'),
@@ -222,8 +213,8 @@ test_pipeline = [
         sweeps_num=1,
         use_dim=radar_use_dims,
         max_num=100, ),
-    dict(type='Normalize3D', **img_norm_cfg),
-    dict(type='Pad3D', size_divisor=32),
+    dict(type='NormalizeMultiviewImage', **img_norm_cfg),
+    dict(type='PadMultiViewImage', size_divisor=32),
 ]
 
 test_pipeline_post = [
