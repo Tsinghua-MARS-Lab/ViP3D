@@ -11,7 +11,7 @@ from mmcv.runner import (get_dist_info, init_dist, load_checkpoint,
 
 from mmdet3d.apis import single_gpu_test
 from mmdet3d.datasets import build_dataloader, build_dataset
-from mmdet3d.models import build_detector
+from mmdet3d.models import build_model
 from mmdet.apis import multi_gpu_test, set_random_seed
 from mmdet.datasets import replace_ImageToTensor
 
@@ -79,10 +79,11 @@ def parse_args():
         choices=['none', 'pytorch', 'slurm', 'mpi'],
         default='none',
         help='job launcher')
-    parser.add_argument('--debug', action='store_true')
-
+    parser.add_argument('--local_rank', type=int, default=0)
 
     args = parser.parse_args()
+    if 'LOCAL_RANK' not in os.environ:
+        os.environ['LOCAL_RANK'] = str(args.local_rank)
 
     if args.options and args.eval_options:
         raise ValueError(
@@ -96,11 +97,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-
-    if args.debug:
-        args.cfg_options['data.workers_per_gpu'] = 0
-    else:
-        args.cfg_options['data.workers_per_gpu'] = 8
 
     assert args.out or args.eval or args.format_only or args.show \
            or args.show_dir, \
@@ -122,29 +118,29 @@ def main():
         from mmcv.utils import import_modules_from_strings
         import_modules_from_strings(**cfg['custom_imports'])
 
-
     # import modules from plguin/xx, registry will be updated
-    if hasattr(cfg, 'plugin') & cfg.plugin:
-        import importlib
-        if hasattr(cfg, 'plugin_dir'):
-            plugin_dir = cfg.plugin_dir
-            _module_dir = os.path.dirname(plugin_dir)
-            _module_dir = _module_dir.split('/')
-            _module_path = _module_dir[0]
+    if hasattr(cfg, 'plugin'):
+        if cfg.plugin:
+            import importlib
+            if hasattr(cfg, 'plugin_dir'):
+                plugin_dir = cfg.plugin_dir
+                _module_dir = os.path.dirname(plugin_dir)
+                _module_dir = _module_dir.split('/')
+                _module_path = _module_dir[0]
 
-            for m in _module_dir[1:]:
-                _module_path = _module_path + '.' + m
-            print(_module_path)
-            plg_lib = importlib.import_module(_module_path)
-        else:
-            # import dir is the dirpath for the config file
-            _module_dir = os.path.dirname(args.config)
-            _module_dir = _module_dir.split('/')
-            _module_path = _module_dir[0]
-            for m in _module_dir[1:]:
-                _module_path = _module_path + '.' + m
-            print(_module_path)
-            plg_lib = importlib.import_module(_module_path)
+                for m in _module_dir[1:]:
+                    _module_path = _module_path + '.' + m
+                print(_module_path)
+                plg_lib = importlib.import_module(_module_path)
+            else:
+                # import dir is the dirpath for the config file
+                _module_dir = os.path.dirname(args.config)
+                _module_dir = _module_dir.split('/')
+                _module_path = _module_dir[0]
+                for m in _module_dir[1:]:
+                    _module_path = _module_path + '.' + m
+                print(_module_path)
+                plg_lib = importlib.import_module(_module_path)
 
     # set cudnn_benchmark
     if cfg.get('cudnn_benchmark', False):
@@ -189,32 +185,13 @@ def main():
         dist=distributed,
         shuffle=False)
 
-
     # build the model and load checkpoint
     cfg.model.train_cfg = None
-
-    output_dir = os.path.split(args.checkpoint)[0]
-    print('output_dir', output_dir)
-    import time
-    if args.suffix_output_for_pred is not None:
-        args.suffix_output_for_pred = '.' + args.suffix_output_for_pred
-    else:
-        args.suffix_output_for_pred = ''
-    score_path = os.path.join(output_dir, time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime()) + f'.score{args.suffix_output_for_pred}')
-    if args.no_output_for_pred:
-        score_path = None
-    ap_metric_path = os.path.join(output_dir, 'ap_metric.pkl')
-    model = build_detector(cfg.model, test_cfg=cfg.get('test_cfg'))
-    if args.classical_metric:
-        model.classical_metric = True
-    model.output_dir = output_dir
-    model.score_path = score_path
-    model_self = model
+    model = build_model(cfg.model, test_cfg=cfg.get('test_cfg'))
 
     fp16_cfg = cfg.get('fp16', None)
     if fp16_cfg is not None:
         wrap_fp16_model(model)
-    print('Loading from {}'.format(args.checkpoint))
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.fuse_conv_bn:
         model = fuse_conv_bn(model)
@@ -225,22 +202,16 @@ def main():
     else:
         model.CLASSES = dataset.CLASSES
 
-    if args.load_results_dir is not None:
-        import pickle
-        with open(os.path.join(args.load_results_dir, 'results_nusc.pkl'), 'rb') as f:
-            outputs = pickle.load(f)
+    if not distributed:
+        model = MMDataParallel(model, device_ids=[0])
+        outputs = single_gpu_test(model, data_loader, args.show, args.show_dir)
     else:
-        if not distributed:
-            model = MMDataParallel(model, device_ids=[0])
-            outputs = single_gpu_test(model, data_loader, args.show, args.show_dir)
-        else:
-            model = MMDistributedDataParallel(
-                model.cuda(),
-                device_ids=[torch.cuda.current_device()],
-                broadcast_buffers=False)
-            outputs = multi_gpu_test(model, data_loader, args.tmpdir,
-                                     args.gpu_collect)
-
+        model = MMDistributedDataParallel(
+            model.cuda(),
+            device_ids=[torch.cuda.current_device()],
+            broadcast_buffers=False)
+        outputs = multi_gpu_test(model, data_loader, args.tmpdir,
+                                 args.gpu_collect)
 
     rank, _ = get_dist_info()
     if rank == 0:

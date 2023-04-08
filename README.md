@@ -71,7 +71,16 @@ bash tools/dist_train.sh plugin/configs/vip3d_resnet50_3frame.py 8 --work-dir=wo
 The training stage requires ~ 17 GB GPU memory, and takes ~ 3 days for 24 epochs on 8× 3090 GPUS.
 
 #### Evaluation
+Evaluate the prediction:
+
 Coming soon! We are rewriting the evaluation metrics of trajectory prediction reference to the nuScenes official toolkit, making some improvements and making it easier to use for different models.
+
+To check whether the model is well trained, you can evaluate the tracking first:
+```bash
+PYTHONPATH=. python tools/test.py plugin/vip3d/configs/vip3d_resnet50_3frame.py work_dirs/vip3d_resnet50_3frame.1/epoch_24.pth --eval bbox
+```
+Expected AMOTA using ResNet50 as backbone: 0.291
+
 
 
 ## License
