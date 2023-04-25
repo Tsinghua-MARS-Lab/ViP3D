@@ -930,7 +930,8 @@ class NuScenesTrackDatasetRadar(Dataset):
             boxes = lidar_nusc_box_to_global(self.data_infos[sample_id], boxes,
                                              mapped_class_names,
                                              self.eval_detection_configs,
-                                             self.eval_version)
+                                             self.eval_version,
+                                             include_prediction=True)
             for i, box in enumerate(boxes):
                 name = mapped_class_names[box.label]
                 if np.sqrt(box.velocity[0] ** 2 + box.velocity[1] ** 2) > 0.2:
@@ -1188,10 +1189,13 @@ def output_to_nusc_box_tracking(detection):
         list[:obj:`NuScenesBox`]: List of NuScenesTrackingBoxes.
     """
     box3d = detection['boxes_3d']
-    scores = detection['scores_3d'].numpy()
+
     # overwrite the scores with the tracking scores
     if 'track_scores' in detection.keys() and detection['track_scores'] is not None:
         scores = detection['track_scores'].numpy()
+    else:
+        scores = detection['scores_3d'].numpy()
+
     labels = detection['labels_3d'].numpy()
     pred_outputs_in_ego = detection.get('pred_outputs_in_ego', None)
     pred_probs_in_ego = detection.get('pred_probs_in_ego', None)
@@ -1235,7 +1239,9 @@ def lidar_nusc_box_to_global(info,
                              boxes,
                              classes,
                              eval_configs,
-                             eval_version='detection_cvpr_2019'):
+                             eval_version='detection_cvpr_2019',
+                             include_prediction=False,
+                             ):
     """Convert the box from ego to global coordinate.
 
     Args:
@@ -1267,12 +1273,18 @@ def lidar_nusc_box_to_global(info,
         box.translate(np.array(info['ego2global_translation']))
         box_list.append(box)
 
-        if hasattr(box, 'pred_outputs') and box.pred_outputs is not None:
-            # Move pred outputs from ego to global
-            assert box.pred_outputs.shape == (6, 12, 2)
-            for i in range(box.pred_outputs.shape[0]):
-                for j in range(box.pred_outputs.shape[1]):
-                    box.pred_outputs[i, j] = utils.get_transform_and_rotate(box.pred_outputs[i, j], np.array(info['ego2global_translation']), info['ego2global_rotation'])
+        if include_prediction:
+            assert hasattr(box, 'pred_outputs')
+            if box.pred_outputs is not None:
+                # Move pred outputs from ego to global
+                assert box.pred_outputs.shape == (6, 12, 2)
+                for i in range(box.pred_outputs.shape[0]):
+                    for j in range(box.pred_outputs.shape[1]):
+                        box.pred_outputs[i, j] = utils.get_transform_and_rotate(box.pred_outputs[i, j], np.array(info['ego2global_translation']), info['ego2global_rotation'])
+            else:
+                box.pred_outputs = np.zeros((6, 12, 2))
+                translation = np.array([box.center[0], box.center[1]])
+                box.pred_outputs[:] = translation[np.newaxis, np.newaxis, :]
 
     return box_list
 

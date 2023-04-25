@@ -80,6 +80,7 @@ def parse_args():
         default='none',
         help='job launcher')
     parser.add_argument('--local_rank', type=int, default=0)
+    parser.add_argument('--output_dir', default=None)
 
     args = parser.parse_args()
     if 'LOCAL_RANK' not in os.environ:
@@ -234,9 +235,12 @@ def main():
             ]:
                 eval_kwargs.pop(key, None)
             eval_kwargs.update(dict(metric=args.eval, **kwargs))
-            if args.out:
-                assert 'jsonfile_prefix' not in eval_kwargs
-                eval_kwargs['jsonfile_prefix'] = args.out
+
+            if args.output_dir is None:
+                args.output_dir = os.path.split(args.checkpoint)[0]
+
+            assert 'jsonfile_prefix' not in eval_kwargs
+            eval_kwargs['jsonfile_prefix'] = args.output_dir
 
             score_dict = dataset.evaluate(outputs, **eval_kwargs)
             print(score_dict)

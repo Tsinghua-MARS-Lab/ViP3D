@@ -989,6 +989,8 @@ class ViP3D(MVXTwoStageDetector):
                         pred_outputs_single_traj.append(pred_outputs[j, argmax])
                         pred_outputs[j] = normalizers[j](pred_outputs[j], reverse=True)
 
+                self.add_pred_results(results[0], pred_outputs, pred_probs)
+
                 pred_dict = dict(
                     instance_idx_2_labels=instance_idx_2_labels,
                     pred_outputs=pred_outputs,

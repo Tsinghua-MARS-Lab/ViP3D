@@ -32,7 +32,7 @@ git clone https://github.com/open-mmlab/mmdetection3d.git
 cd mmdetection3d
 git checkout v0.17.1 # Other versions may not be compatible.
 python setup.py install
-pip install -r requirements.txt  # Install packages for mmdet3d
+pip install -r requirements/runtime.txt  # Install packages for mmdet3d
 ```
 
 ## Prepare Dataset
@@ -71,17 +71,22 @@ bash tools/dist_train.sh plugin/configs/vip3d_resnet50_3frame.py 8 --work-dir=wo
 The training stage requires ~ 17 GB GPU memory, and takes ~ 3 days for 24 epochs on 8× 3090 GPUS.
 
 #### Evaluation
-Evaluate the prediction:
 
-Coming soon! We are rewriting the evaluation metrics of trajectory prediction reference to the nuScenes official toolkit, making some improvements and making it easier to use for different models.
-
-To check whether the model is well trained, you can evaluate the tracking first:
+Run evaluation using the following command:
 ```bash
 PYTHONPATH=. python tools/test.py plugin/vip3d/configs/vip3d_resnet50_3frame.py work_dirs/vip3d_resnet50_3frame.1/epoch_24.pth --eval bbox
 ```
 Expected AMOTA using ResNet50 as backbone: 0.291
 
+Then test prediction metrics:
+```bash
+unzip ./nuscenes_prediction_infos_val.zip
+```
+```bash
+python tools/prediction_eval.py --result_path 'work_dirs/vip3d_resnet50_3frame.1/results_nusc.json'
+```
 
+Expected results: minADE: 1.47, minFDE: 2.21, MR: 0.237, EPA: 0.245
 
 ## License
 The code and assets are under the Apache 2.0 license.
