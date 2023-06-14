@@ -11,21 +11,29 @@
 [//]: # (- Training and Evaluation)
 
 ##  Installation
-#### Create conda environment
+Use the following commands to prepare the python environment. 
+#### 1) Create conda environment
 ```bash
 conda create -n vip3d python=3.6
 ```
-#### Install pytorch
+Only python versions 3.6, 3.7, 3.8 are supported. 
+#### 2) Install pytorch
 ```bash
 conda activate vip3d
 pip install torch==1.10+cu111 torchvision==0.11.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
 ```
-#### Install mmcv, mmdet
+#### 3) Install mmcv, mmdet
 ```bash
 pip install mmcv-full==1.4.0 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10/index.html
 pip install mmdet==2.24.1
 ```
-#### Install mmdet3d
+
+#### 4) Install other packages
+```bash
+pip install -r requirements.txt
+```
+
+#### 5) Install mmdet3d
 ```bash
 cd ~
 git clone https://github.com/open-mmlab/mmdetection3d.git
@@ -36,7 +44,7 @@ pip install -r requirements/runtime.txt  # Install packages for mmdet3d
 ```
 
 ## Prepare Dataset
-#### Download nuScenes full dataset (v1.0) and map expansion (v1.3) [here](https://www.nuscenes.org/download).
+#### Download nuScenes full dataset (v1.0) and map expansion [here](https://www.nuscenes.org/download).
 Only need to download Keyframe blobs and Radar blobs.
 
 

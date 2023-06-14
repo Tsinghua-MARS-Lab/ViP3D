@@ -1,0 +1,10 @@
+opencv-python<=4.5.5.62
+mmsegmentation<=0.20.2
+pyquaternion
+shapely
+numba==0.48.0
+nuscenes-devkit
+pandas<=1.3.5
+descartes
+motmetrics<=1.1.3
+networkx==2.2
