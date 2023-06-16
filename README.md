@@ -16,7 +16,7 @@ Use the following commands to prepare the python environment.
 ```bash
 conda create -n vip3d python=3.6
 ```
-Only python versions 3.6, 3.7, 3.8 are supported. 
+Supported python versions are 3.6, 3.7, 3.8. 
 #### 2) Install pytorch
 ```bash
 conda activate vip3d
@@ -43,12 +43,20 @@ python setup.py install
 pip install -r requirements/runtime.txt  # Install packages for mmdet3d
 ```
 
+### Quick start with Docker (Optional)
+We also provide a docker image of ViP3D, which has installed all required packages. The docker image is built from NVIDIA container image for PyTorch. Make sure you have installed docker and nvidia docker.
+
+```bash
+docker pull gentlesmile/vip3d
+docker run --name vip3d_container -it --gpus all --ipc=host gentlesmile/vip3d
+```
+
 ## Prepare Dataset
-#### Download nuScenes full dataset (v1.0) and map expansion [here](https://www.nuscenes.org/download).
+#### 1) Download nuScenes full dataset (v1.0) and map expansion [here](https://www.nuscenes.org/download).
 Only need to download Keyframe blobs and Radar blobs.
 
 
-#### Structure
+#### 2) Structure
 After downloading, the structure is as follows:
 ```
 ViP3D
@@ -63,22 +71,22 @@ ViP3D
 │   │   ├── lidarseg/
 ```
 
-#### Prepare data infos
-Suppose data is saved at ```data/nuscenes/```.
+#### 3) Prepare data infos
+Suppose nuScenes data is saved at ```data/nuscenes/```.
 ```bash
 python tools/data_converter/nusc_tracking.py
 ```
 
 ##  Training and Evaluation
 
-#### Training
+### Training
 Train ViP3D using 3 historical frames and the ResNet50 backbone. It will load a pre-trained detector for weight initialization. Suppose the detector is at ```ckpts/detr3d_resnet50.pth```. It can be downloaded from [here](https://drive.google.com/drive/folders/18q2sQ-J-AxqeCO8FaAWKQ9Fi13PPv_MR?usp=drive_link).
 ```bash
 bash tools/dist_train.sh plugin/configs/vip3d_resnet50_3frame.py 8 --work-dir=work_dirs/vip3d_resnet50_3frame.1
 ```
 The training stage requires ~ 17 GB GPU memory, and takes ~ 3 days for 24 epochs on 8× 3090 GPUS.
 
-#### Evaluation
+### Evaluation
 
 Run evaluation using the following command:
 ```bash
