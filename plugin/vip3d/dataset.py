@@ -133,6 +133,7 @@ class NuScenesTrackDatasetRadar(Dataset):
                  use_valid_flag=True,
                  do_pred=False,
                  calc_prediction_metric=False,
+                 generate_nuscenes_prediction_infos_val=False,
                  **kwargs,
                  ):
         self.load_interval = load_interval
@@ -184,12 +185,70 @@ class NuScenesTrackDatasetRadar(Dataset):
                 use_external=False,
             )
         self.do_pred = do_pred
+        self.generate_nuscenes_prediction_infos_val = generate_nuscenes_prediction_infos_val
 
     def prepare_nuscenes(self):
         self.nuscenes = NuScenes('v1.0-trainval/', dataroot=self.data_root)
         # self.nuscenes = NuScenes('v1.0-mini', dataroot=data_root)
         self.helper = PredictHelper(self.nuscenes)
         self.maps = load_all_maps(self.helper)
+
+    def generate_prediction(self, data_detection, cur_info, index):
+        assert self.test_mode
+        assert len(self) == len(self.data_infos)
+
+        self.add_labels_for_test_info(data_detection, index)
+
+        instance_inds = data_detection['instance_inds']
+        gt_bboxes_3d = data_detection['gt_bboxes_3d'].tensor.numpy()
+        gt_labels_3d = data_detection['gt_labels_3d']
+        sample_token = cur_info['token']
+
+        l2e_r = cur_info['lidar2ego_rotation']
+        l2e_t = cur_info['lidar2ego_translation']
+        e2g_r = cur_info['ego2global_rotation']
+        e2g_t = cur_info['ego2global_translation']
+
+        new_gt_bboxes_3d = []
+        for box_idx in range(len(instance_inds)):
+            box = utils.get_box_from_array(gt_bboxes_3d[box_idx])
+            box = utils.get_transform_and_rotate_box(box, l2e_t, l2e_r)
+            box = utils.get_transform_and_rotate_box(box, e2g_t, e2g_r)
+            utils.fix_box_from_array = True
+            array = utils.get_array_from_box(box)
+            new_gt_bboxes_3d.append(array)
+        gt_bboxes_3d = np.array(new_gt_bboxes_3d)
+
+        if not hasattr(self, 'nuscenes_prediction_infos_val'):
+            from collections import OrderedDict
+            self.nuscenes_prediction_infos_val = OrderedDict()
+
+        self.nuscenes_prediction_infos_val[sample_token] = dict(
+            sample_token=sample_token,
+            timestamp=cur_info['timestamp'],
+            instance_inds=instance_inds.tolist(),
+            gt_bboxes_3d=gt_bboxes_3d.tolist(),
+            gt_labels_3d=gt_labels_3d.tolist()
+        )
+
+        print('length of nuscenes_prediction_infos_val', len(self.nuscenes_prediction_infos_val))
+
+        if index == len(self.data_infos) - 1:
+            with open(os.path.join(self.data_root, 'nuscenes_prediction_infos_val.json'), 'w') as f:
+                import json
+                json.dump(self.nuscenes_prediction_infos_val, f, indent=4)
+
+    def add_labels_for_test_info(self, data_i, index):
+        from mmcv.utils import build_from_cfg
+        from mmdet.datasets.builder import PIPELINES
+
+        point_cloud_range = [-51.2, -51.2, -5.0, 51.2, 51.2, 3.0]
+        range_filter = build_from_cfg(dict(type='InstanceRangeFilter', point_cloud_range=point_cloud_range), PIPELINES)
+        data_i['ann_info'] = self.get_ann_info(index)
+        data_i['gt_bboxes_3d'] = data_i['ann_info']['gt_bboxes_3d']
+        data_i['gt_labels_3d'] = data_i['ann_info']['gt_labels_3d']
+        range_filter(data_i)
+        data_i['instance_inds'] = data_i['ann_info']['instance_inds']
 
     def get_transform_and_rotate(self, point, translation, rotation, reverse=False):
         if reverse:
@@ -870,6 +929,10 @@ class NuScenesTrackDatasetRadar(Dataset):
 
             for key, value in data_i.items():
                 ret[key].append(value)
+
+        if self.generate_nuscenes_prediction_infos_val:
+            data_i = self.prepare_test_data_single(index)
+            self.generate_prediction(data_i, self.data_infos[start], index)
 
         if self.do_pred:
             pred_data = self.prepare_pred(end - 3, end, interval, index)
