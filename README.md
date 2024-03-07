@@ -82,7 +82,7 @@ python tools/data_converter/nusc_tracking.py
 ### Training
 Train ViP3D using 3 historical frames and the ResNet50 backbone. It will load a pre-trained detector for weight initialization. Suppose the detector is at ```ckpts/detr3d_resnet50.pth```. It can be downloaded from [here](https://drive.google.com/drive/folders/18q2sQ-J-AxqeCO8FaAWKQ9Fi13PPv_MR?usp=drive_link).
 ```bash
-bash tools/dist_train.sh plugin/configs/vip3d_resnet50_3frame.py 8 --work-dir=work_dirs/vip3d_resnet50_3frame.1
+bash tools/dist_train.sh plugin/vip3d/configs/vip3d_resnet50_3frame.py 8 --work-dir=work_dirs/vip3d_resnet50_3frame.1
 ```
 The training stage requires ~ 17 GB GPU memory, and takes ~ 3 days for 24 epochs on 8× 3090 GPUS.
 
